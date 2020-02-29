@@ -47,6 +47,7 @@ ExportedObj/
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
+*.csproj.meta
 
 # Unity3D generated file on crash reports
 sysinfo.txt
@@ -83,3 +84,27 @@ Assets/External/GoogleARCore/Examples.meta
 # TextMesh Pro assets
 Assets/TextMesh Pro.meta
 Assets/TextMesh Pro/
+
+
+# ============================= #
+# NuGet Build Process Generated #
+# ============================= #
+/NuGet/*
+!/NuGet/BuildSource.proj
+/MRTKBuild/
+/MSBuild/
+/PackagesCopy/
+!/scripts/Packaging/NuGetRestoreProject.csproj
+
+# ========================= #
+# MSBuildForUnity generated #
+# ========================= #
+MSBuildForUnity.Common.props
+/*.msb4u.csproj.meta
+*.msb4u.csproj.meta
+/*.msb4u.sln.meta
+*.msb4u.sln.meta
+Dependencies*
+Nuget.config*
+
+Assets/MixedRealityToolkit.Providers/WindowsMixedReality/Shared/DotNetAdapter/*
