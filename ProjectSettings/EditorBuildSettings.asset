@@ -50,7 +50,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity
     guid: bf3eb3415bffceb41810526380c2c71c
-  - enabled: 1
+  - enabled: 0
     path: Assets/MixedRealityToolkit.Examples/Experimental/PulseShader/Scenes/PulseShaderExamples.unity
     guid: b999fc33ed20d7b468c63e293adc3f9f
+  - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
