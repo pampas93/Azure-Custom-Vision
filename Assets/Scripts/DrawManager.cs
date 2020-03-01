@@ -91,7 +91,7 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
         }
     }
 
-    void ClearDrawings()
+    public void ClearDrawings()
     {
         foreach (var line in lines)
         {
@@ -132,7 +132,7 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
 
     public void OnPointerUp(MixedRealityPointerEventData eventData) 
     {
-        OnDrawEnd?.Invoke();
+        // OnDrawEnd?.Invoke();
     }
 
     public void OnPointerClicked(MixedRealityPointerEventData eventData) {}

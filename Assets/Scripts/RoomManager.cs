@@ -1,17 +1,30 @@
 ﻿using UnityEngine;
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
+using System.IO;
 
 public class RoomManager : MonoSingleton<RoomManager>
 {
     [SerializeField]
     private GameObject roomPlanes;
-
     [SerializeField]
     private Camera captureCamera;
-
     [SerializeField]
     private Transform currentPlane;
+
+    private const string baseImageName = "Capture.jpg";
+    private const string imageExtension = ".jpg";
+    private string imageDir { 
+        get 
+        {
+            var path = Path.Combine(Application.persistentDataPath, "Captures");
+            if (!Directory.Exists(path)) 
+            {
+                Directory.CreateDirectory(path);
+            }
+            return path;
+        }
+    }
 
     void Start()
     {
@@ -32,7 +45,37 @@ public class RoomManager : MonoSingleton<RoomManager>
         captureCamera.transform.LookAt(currentPlane);
     }
 
-    void CaptureDrawing()
+    public void CaptureDrawing()
     {
+        RenderTexture activeRenderTexture = RenderTexture.active;
+        RenderTexture.active = captureCamera.targetTexture;
+ 
+        captureCamera.Render();
+ 
+        Texture2D image = new Texture2D(captureCamera.targetTexture.width, captureCamera.targetTexture.height);
+        image.ReadPixels(new Rect(0, 0, captureCamera.targetTexture.width, captureCamera.targetTexture.height), 0, 0);
+        image.Apply();
+        RenderTexture.active = activeRenderTexture;
+ 
+        byte[] bytes = image.EncodeToJPG();
+        Destroy(image);
+
+        File.WriteAllBytes(GetUniqueFileName(), bytes);
+        Debug.Log(Application.persistentDataPath);
+    }
+
+    private string GetUniqueFileName()
+    {
+        string filePath = Path.Combine(imageDir, baseImageName);
+        int i = 1;
+        while(File.Exists(filePath))
+        {
+            var temp = Path.GetFileNameWithoutExtension(baseImageName);
+            var newName = temp + i + imageExtension;
+            filePath = Path.Combine(imageDir, newName);
+            i++;
+        }
+
+        return filePath;
     }
 }

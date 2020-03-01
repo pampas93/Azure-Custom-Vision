@@ -6,4 +6,10 @@ public class HandMenu : MonoSingleton<HandMenu>
     {
         DrawManager.Instance.UndoLine();
     }
+
+    public void OnCaptureClick()
+    {
+        RoomManager.Instance.CaptureDrawing();
+        DrawManager.Instance.ClearDrawings();
+    }
 }

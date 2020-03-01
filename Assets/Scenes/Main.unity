@@ -414,7 +414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd62a5e3289c0cc4e871d6c655618627, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineWidth: 0.02
+  lineWidth: 0.04
   defaultMaterial: {fileID: 2100000, guid: dbce87d1f5870914d97666507226057c, type: 2}
 --- !u!4 &740461815
 Transform:
@@ -480,7 +480,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 256
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
+  m_TargetTexture: {fileID: 8600000, guid: 57f539e895712ed4b9f69976dfa5ea24, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
