@@ -9,6 +9,7 @@ public class HandMenu : MonoSingleton<HandMenu>
 
     public void OnCaptureClick()
     {
+        return;
         RoomManager.Instance.CaptureDrawing();
         DrawManager.Instance.ClearDrawings();
     }

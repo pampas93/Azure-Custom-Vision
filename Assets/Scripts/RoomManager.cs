@@ -11,6 +11,16 @@ public class RoomManager : MonoSingleton<RoomManager>
     private Camera captureCamera;
     [SerializeField]
     private Transform currentPlane;
+    [SerializeField]
+    private Mode appMode = Mode.Analyze;
+
+    enum Mode
+    {
+        Train,
+        Analyze
+    }
+
+    
 
     private const string baseImageName = "Capture.jpg";
     private const string imageExtension = ".jpg";
@@ -60,8 +70,26 @@ public class RoomManager : MonoSingleton<RoomManager>
         byte[] bytes = image.EncodeToJPG();
         Destroy(image);
 
-        File.WriteAllBytes(GetUniqueFileName(), bytes);
-        Debug.Log(Application.persistentDataPath);
+        switch(appMode)
+        {
+            case Mode.Train: File.WriteAllBytes(GetUniqueFileName(), bytes);
+                break;
+            case Mode.Analyze: AzureCVAnalyzer.Instance.AnalyzeImage(bytes, (tag) => VisionResult(tag));
+                break;
+        }
+    }
+
+    private void VisionResult(AzureCVAnalyzer.AzureCVTag tag)
+    {
+        switch(tag)
+        {
+            case AzureCVAnalyzer.AzureCVTag.circle:
+                break;
+            case AzureCVAnalyzer.AzureCVTag.square:
+                break;
+            case AzureCVAnalyzer.AzureCVTag.none:
+                break;
+        }
     }
 
     private string GetUniqueFileName()
