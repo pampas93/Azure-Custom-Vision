@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit;
@@ -18,6 +18,9 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
         get => enableDraw;
         set => enableDraw = value;
     }
+
+    public event Action<IMixedRealityCursor, Vector3> OnDrawStart;
+    public event Action OnDrawEnd;
 
     private Vector3 prevPointDistance = Vector3.zero;
     private List<LineRenderer> lines = new List<LineRenderer>();
@@ -55,6 +58,7 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
     {
         positionCount = 0;
         GameObject go = new GameObject($"LineRenderer_{lines.Count}");
+        go.layer = LayerMask.NameToLayer("Lines");
         go.transform.parent = transform;
         LineRenderer goLineRenderer = go.AddComponent<LineRenderer>();
         goLineRenderer.startWidth = lineWidth;
@@ -86,6 +90,15 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
             lines.RemoveAt(lines.Count-1);
         }
     }
+
+    void ClearDrawings()
+    {
+        foreach (var line in lines)
+        {
+            Destroy(line);
+        }
+        lines.Clear();
+    }
     
 
 #region IMixedRealityPointerHandler
@@ -95,8 +108,11 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
 
         if (eventData.Pointer is LinePointer pointer)
         {
+            // Clear all previous drawings, to avoid clash of two drawing in same capture
+            ClearDrawings();
 
             grabPosition = pointer.BaseCursor.Position;
+            OnDrawStart?.Invoke(pointer.BaseCursor, grabPosition);
         }
 
         AddNewLineRenderer();
@@ -114,7 +130,10 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
         UpdateLine();
     }
 
-    public void OnPointerUp(MixedRealityPointerEventData eventData) {}
+    public void OnPointerUp(MixedRealityPointerEventData eventData) 
+    {
+        OnDrawEnd?.Invoke();
+    }
 
     public void OnPointerClicked(MixedRealityPointerEventData eventData) {}
 #endregion
