@@ -27,7 +27,7 @@ public class AzureCVAnalyzer : MonoSingleton<AzureCVAnalyzer>
     /// <summary>
     /// Call the Computer Vision Service to submit the image.
     /// </summary>
-    IEnumerator AnalyseLastImageCaptured(byte[] imageBytes, Action<AzureCVTag> onDone)
+    IEnumerator AnalyseLastImageCaptured(byte[] imageBytes, Action<AzureCVTag, double> onDone)
     {
         WWWForm webForm = new WWWForm();
         using (UnityWebRequest unityWebRequest = UnityWebRequest.Post(predictionEndpoint, webForm))
@@ -67,21 +67,30 @@ public class AzureCVAnalyzer : MonoSingleton<AzureCVAnalyzer>
 
                 // If the max probability of a tag is lesser than 65%, better keep it to none
                 if (maxProbability < 0.65)
+                {
                     resultTag = AzureCVTag.none;
+                    maxProbability = 0;
+                }
+                    
 
-                onDone(resultTag);
+                onDone(resultTag, maxProbability);
             }
             catch (Exception ex)
             {
                 Debug.LogError(ex.Message);
-                onDone(AzureCVTag.none);
+                onDone(AzureCVTag.none, 0);
             }
         }
     }
 
-    public void AnalyzeImage(byte[] imageBytes, Action<AzureCVTag> onDone)
+    public void AnalyzeImage(byte[] imageBytes, Action<AzureCVTag, double> onDone)
     {
+        // Use sample data while running on Editor. Saves API calls
+#if UNITY_EDITOR
+        onDone(AzureCVTag.circle, 0.8675);
+#else
         StartCoroutine(AnalyseLastImageCaptured(imageBytes, onDone));
+#endif
     }
 }
 

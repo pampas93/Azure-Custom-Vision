@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
+using System;
 using System.IO;
 
 public class RoomManager : MonoSingleton<RoomManager>
@@ -11,16 +12,18 @@ public class RoomManager : MonoSingleton<RoomManager>
     private Camera captureCamera;
     [SerializeField]
     private Transform currentPlane;
+    
     [SerializeField]
     private Mode appMode = Mode.Analyze;
+
+    [SerializeField]
+    private SpeechConfirmationTooltip tagConfirmationPrefab;
 
     enum Mode
     {
         Train,
         Analyze
     }
-
-    
 
     private const string baseImageName = "Capture.jpg";
     private const string imageExtension = ".jpg";
@@ -51,7 +54,7 @@ public class RoomManager : MonoSingleton<RoomManager>
         currentPlane.position = cursor.Position;
         currentPlane.rotation = cursor.Rotation;
 
-        captureCamera.transform.position = currentPlane.forward * 1.5f;;
+        captureCamera.transform.position = currentPlane.forward * 1.5f;
         captureCamera.transform.LookAt(currentPlane);
     }
 
@@ -74,14 +77,19 @@ public class RoomManager : MonoSingleton<RoomManager>
         {
             case Mode.Train: File.WriteAllBytes(GetUniqueFileName(), bytes);
                 break;
-            case Mode.Analyze: AzureCVAnalyzer.Instance.AnalyzeImage(bytes, (tag) => VisionResult(tag));
+            case Mode.Analyze: AzureCVAnalyzer.Instance.AnalyzeImage(bytes, 
+                    (cvTag, probability) => VisionResult(cvTag, probability));
                 break;
         }
     }
 
-    private void VisionResult(AzureCVAnalyzer.AzureCVTag tag)
+    private void VisionResult(AzureCVAnalyzer.AzureCVTag cvTag, double probability)
     {
-        switch(tag)
+        var showTag = Instantiate(tagConfirmationPrefab);
+        showTag.SetText(cvTag.ToString() + ", with " + Math.Round(probability, 2)*100 + "%");
+        showTag.TriggerConfirmedAnimation();
+
+        switch(cvTag)
         {
             case AzureCVAnalyzer.AzureCVTag.circle:
                 break;
