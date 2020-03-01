@@ -36,7 +36,6 @@ public class RoomManager : MonoSingleton<RoomManager>
                 Directory.CreateDirectory(path);
             }
             return path;
-            // Revert these changes
         }
     }
 
