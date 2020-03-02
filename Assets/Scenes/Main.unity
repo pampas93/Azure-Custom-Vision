@@ -170,6 +170,13 @@ MonoBehaviour:
   appMode: 1
   tagConfirmationPrefab: {fileID: 8589970875019306617, guid: b08c817f0de1bf440896fec90ad1e1e0,
     type: 3}
+  tagObjects:
+  - tag: 0
+    prefab: {fileID: 6431778794631564913, guid: a0f395bb25e59ae499af04b4661d38a3,
+      type: 3}
+  - tag: 1
+    prefab: {fileID: 8813594608726109648, guid: 38e957d8f81f40e408a6d95cbbb7ee09,
+      type: 3}
 --- !u!114 &177034363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,7 +262,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 4.545857e-39, y: NaN, z: 1.836709e-39, w: 2.015625}
+  m_BoundingSphereOverride: {x: 1.65e-43, y: 6e-44, z: 0, w: 0.000005536014}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1215,7 +1222,7 @@ GameObject:
   - component: {fileID: 1810022949}
   - component: {fileID: 1810022948}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: DrawingPlane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

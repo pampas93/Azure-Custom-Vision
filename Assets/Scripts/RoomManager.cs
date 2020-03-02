@@ -3,6 +3,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 public class RoomManager : MonoSingleton<RoomManager>
 {
@@ -18,6 +19,9 @@ public class RoomManager : MonoSingleton<RoomManager>
 
     [SerializeField]
     private SpeechConfirmationTooltip tagConfirmationPrefab;
+
+    [SerializeField]
+    private TagObject[] tagObjects;
 
     enum Mode
     {
@@ -39,6 +43,9 @@ public class RoomManager : MonoSingleton<RoomManager>
         }
     }
 
+    private Dictionary<AzureCVAnalyzer.AzureCVTag, GameObject> tagObjDict;
+    private List<GameObject> magicObjects = new List<GameObject>();
+
     void Start()
     {
 #if !UNITY_EDITOR
@@ -47,6 +54,12 @@ public class RoomManager : MonoSingleton<RoomManager>
 
         DrawManager.Instance.OnDrawStart += CapturePlane;
         DrawManager.Instance.OnDrawEnd += CaptureDrawing;
+
+        tagObjDict = new Dictionary<AzureCVAnalyzer.AzureCVTag, GameObject>();
+        foreach (var pair in tagObjects)
+        {
+            tagObjDict.Add(pair.Tag, pair.Prefab);
+        }
     }
 
     void CapturePlane(IMixedRealityCursor cursor, Vector3 drawPos)
@@ -91,13 +104,35 @@ public class RoomManager : MonoSingleton<RoomManager>
 
         switch(cvTag)
         {
-            case AzureCVAnalyzer.AzureCVTag.circle:
-                break;
-            case AzureCVAnalyzer.AzureCVTag.square:
-                break;
             case AzureCVAnalyzer.AzureCVTag.none:
                 break;
+            default: CreateMagic(tagObjDict[cvTag]);
+                break;
         }
+    }
+
+    private void CreateMagic(GameObject prefab)
+    {
+        var initialPos = DrawManager.Instance.InitialPos;
+        var farthestPos = DrawManager.Instance.FarthestPoint;
+        var midpoint = Vector3.Lerp(initialPos, farthestPos, 0.5f);
+        var size = Vector3.Distance(initialPos, farthestPos);
+
+        var obj = Instantiate(prefab, midpoint, currentPlane.rotation);
+        obj.transform.localScale = new Vector3(size, size, size);
+
+        magicObjects.Add(obj);
+
+        DrawManager.Instance.ClearDrawings();
+    }
+
+    public void DeleteMagicObjects()
+    {
+        foreach (var obj in magicObjects)
+        {
+            Destroy(obj);
+        }
+        magicObjects.Clear();
     }
 
     private string GetUniqueFileName()
@@ -114,4 +149,16 @@ public class RoomManager : MonoSingleton<RoomManager>
 
         return filePath;
     }
+}
+
+[Serializable]
+public class TagObject
+{
+    [SerializeField]
+    private AzureCVAnalyzer.AzureCVTag tag;
+    [SerializeField]
+    private GameObject prefab;
+
+    public AzureCVAnalyzer.AzureCVTag Tag { get => tag; }
+    public GameObject Prefab { get => prefab; }
 }

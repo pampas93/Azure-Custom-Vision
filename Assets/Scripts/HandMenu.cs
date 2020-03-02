@@ -13,4 +13,9 @@ public class HandMenu : MonoSingleton<HandMenu>
         RoomManager.Instance.CaptureDrawing();
         DrawManager.Instance.ClearDrawings();
     }
+
+    public void ClearObjects()
+    {
+        RoomManager.Instance.DeleteMagicObjects();
+    }
 }

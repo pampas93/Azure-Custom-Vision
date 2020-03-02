@@ -29,6 +29,12 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
     private Vector3 grabPosition = new Vector3();
     private float minDistanceBeforeNewPoint = 0.001f;
 
+    private Vector3 initialPos;
+    private Vector3 farthestPos;
+    private float maxDistance = 0.0f;
+    public Vector3 InitialPos { get => initialPos; }
+    public Vector3 FarthestPoint { get => farthestPos; }
+
     void OnEnable()
     {
         CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
@@ -71,6 +77,10 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
 
         currentLineRender = goLineRenderer;
         lines.Add(goLineRenderer);
+
+        initialPos = grabPosition;
+        maxDistance = 0.0f;
+        farthestPos = Vector3.zero;
     }
 
     void AddPoint(Vector3 position)
@@ -79,6 +89,13 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
         positionCount++;
         currentLineRender.positionCount = positionCount + 1;
         currentLineRender.SetPosition(positionCount, position);
+
+        var distance = Vector3.Distance(initialPos, position);
+        if (distance > maxDistance)
+        {
+            maxDistance = distance;
+            farthestPos = position;
+        }
     }
 
     public void UndoLine()
