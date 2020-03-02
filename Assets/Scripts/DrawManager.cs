@@ -35,6 +35,13 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
     public Vector3 InitialPos { get => initialPos; }
     public Vector3 FarthestPoint { get => farthestPos; }
 
+    private int spatialLayer;
+
+    void Start()
+    {
+        spatialLayer = LayerMask.NameToLayer("Spatial Awareness");
+    }
+
     void OnEnable()
     {
         CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
@@ -128,6 +135,9 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
             // Clear all previous drawings, to avoid clash of two drawing in same capture
             ClearDrawings();
 
+            if (!pointer.Result.CurrentPointerTarget || pointer.Result.CurrentPointerTarget.layer != spatialLayer)
+                return;
+
             grabPosition = pointer.BaseCursor.Position;
             OnDrawStart?.Invoke(pointer.BaseCursor, grabPosition);
         }
@@ -141,6 +151,9 @@ public class DrawManager : MonoSingleton<DrawManager>, IMixedRealityPointerHandl
 
         if (eventData.Pointer is LinePointer pointer)
         {
+            if (!pointer.Result.CurrentPointerTarget || pointer.Result.CurrentPointerTarget.layer != spatialLayer)
+                return;
+
             grabPosition = pointer.BaseCursor.Position;
         }
         

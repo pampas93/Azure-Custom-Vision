@@ -170,6 +170,7 @@ MonoBehaviour:
   appMode: 1
   tagConfirmationPrefab: {fileID: 8589970875019306617, guid: b08c817f0de1bf440896fec90ad1e1e0,
     type: 3}
+  maxObjectSize: 1.2
   tagObjects:
   - tag: 0
     prefab: {fileID: 6431778794631564913, guid: a0f395bb25e59ae499af04b4661d38a3,
@@ -262,7 +263,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1.65e-43, y: 6e-44, z: 0, w: 0.000005536014}
+  m_BoundingSphereOverride: {x: -2.3352592e+27, y: 1.2160091e-20, z: 0.10040315, w: NaN}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -289,7 +290,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 715512003}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: RoomPlanes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +328,7 @@ GameObject:
   - component: {fileID: 722165012}
   - component: {fileID: 722165011}
   - component: {fileID: 722165010}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Plane (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -683,7 +684,7 @@ GameObject:
   - component: {fileID: 1031339093}
   - component: {fileID: 1031339092}
   - component: {fileID: 1031339091}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -776,7 +777,7 @@ GameObject:
   - component: {fileID: 1444753004}
   - component: {fileID: 1444753003}
   - component: {fileID: 1444753002}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Plane (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -960,7 +961,7 @@ GameObject:
   - component: {fileID: 1574603315}
   - component: {fileID: 1574603314}
   - component: {fileID: 1574603313}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Plane (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1053,7 +1054,7 @@ GameObject:
   - component: {fileID: 1668183614}
   - component: {fileID: 1668183613}
   - component: {fileID: 1668183612}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Plane (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

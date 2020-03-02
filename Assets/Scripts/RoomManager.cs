@@ -21,6 +21,8 @@ public class RoomManager : MonoSingleton<RoomManager>
     private SpeechConfirmationTooltip tagConfirmationPrefab;
 
     [SerializeField]
+    private float maxObjectSize = 1.2f;
+    [SerializeField]
     private TagObject[] tagObjects;
 
     enum Mode
@@ -117,6 +119,7 @@ public class RoomManager : MonoSingleton<RoomManager>
         var farthestPos = DrawManager.Instance.FarthestPoint;
         var midpoint = Vector3.Lerp(initialPos, farthestPos, 0.5f);
         var size = Vector3.Distance(initialPos, farthestPos);
+        size = size > maxObjectSize ? maxObjectSize : size;
 
         var obj = Instantiate(prefab, midpoint, currentPlane.rotation);
         obj.transform.localScale = new Vector3(size, size, size);
